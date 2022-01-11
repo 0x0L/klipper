@@ -44,6 +44,9 @@ class ExtruderStepper:
         mcu_pos = self.stepper.get_past_mcu_position(print_time)
         return self.stepper.mcu_to_commanded_position(mcu_pos)
     def sync_to_extruder(self, extruder_name):
+        if not extruder_name:
+            self.stepper.set_trapq(None)
+            return
         extruder = self.printer.lookup_object(extruder_name, None)
         if extruder is None:
             raise self.printer.command_error("'%s' is not a valid extruder."
